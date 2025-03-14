@@ -6,5 +6,6 @@ const { protect } = require("../middleware/auth"); // Pastikan middleware di-imp
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 router.post("/logout", protect, authController.logout);
+router.get("/me", protect, authController.getUser);
 
 module.exports = router;

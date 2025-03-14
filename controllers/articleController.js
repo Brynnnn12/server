@@ -4,15 +4,9 @@ const fs = require("fs");
 
 const path = require("path");
 
-exports.getAllArticlesexports.getAllArticles = async (req, res) => {
+exports.getAllArticles = async (req, res) => {
   try {
-    // Ambil parameter paginasi dari query string
-    const page = parseInt(req.query.page, 10) || 1; // Halaman saat ini, default 1
-    const limit = parseInt(req.query.limit, 10) || 10; // Jumlah item per halaman, default 10
-    const offset = (page - 1) * limit; // Hitung offset
-
-    // Query data dengan paginasi
-    const { count, rows: articles } = await Article.findAndCountAll({
+    const articles = await Article.findAll({
       include: [
         {
           model: Category,
@@ -20,24 +14,13 @@ exports.getAllArticlesexports.getAllArticles = async (req, res) => {
         },
       ],
       order: [["createdAt", "DESC"]],
-      limit: limit, // Jumlah item per halaman
-      offset: offset, // Mulai dari offset
     });
-
-    // Hitung total halaman
-    const totalPages = Math.ceil(count / limit);
 
     res.status(200).json({
       status: "success",
       results: articles.length,
       data: {
         articles,
-      },
-      pagination: {
-        totalItems: count, // Total jumlah artikel
-        totalPages, // Total halaman
-        currentPage: page, // Halaman saat ini
-        itemsPerPage: limit, // Jumlah item per halaman
       },
     });
   } catch (error) {

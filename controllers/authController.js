@@ -127,3 +127,20 @@ exports.logout = (req, res) => {
     message: "Logout berhasil!",
   });
 };
+
+exports.getUser=async(req,res)=>{
+  try {
+    const user = await User.findByPk(req.user.id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+}
