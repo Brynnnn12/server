@@ -15,9 +15,16 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.FRONTEND_URL || "https://articles-new.vercel.app",
+    methods: "GET,POST,PUT,DELETE,PATCH",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true, // Jika menggunakan cookie atau token
   })
 );
+
+// Handle preflight request secara manual (opsional, jika masih error)
+app.options("*", cors());
+
 
 app.use(morgan("dev"));
 app.use(express.json());
