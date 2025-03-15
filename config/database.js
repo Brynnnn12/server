@@ -10,7 +10,11 @@ const sequelize = new Sequelize(
   dbConfig.password,
   {
     host: dbConfig.host,
+    port: dbConfig.port,
     dialect: dbConfig.dialect,
+    dialectOptions: {
+      connectTimeout: 60000, // Timeout lebih lama untuk Railway
+    },
     logging: false,
   }
 );
