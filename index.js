@@ -10,7 +10,19 @@ const routes = require("./routes");
 const sequelize = require("./config/database");
 const errorHandler = require("./middleware/error");
 
+
+
 const app = express();
+
+const fs = require("fs");
+
+const uploadDir = path.join(__dirname, "public/uploads");
+
+// Cek apakah folder ada, jika tidak buat folder
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log("📂 Folder 'public/uploads' telah dibuat.");
+}
 
 // Middleware
 app.use(
